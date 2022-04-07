@@ -1,0 +1,126 @@
+<html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <Maria Teresa Dian Dwiastuti P - 06311940000027>
+    </title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <h1>Evaluasi Tengah Semester - Visualisasi Informasi</h1>
+    <h3>Maria Teresa Dian Dwiastuti - 06311940000027 </h3>
+    <style>
+        body {
+            background-color: rgb(0, 0, 0);
+            color: rgb(255, 192, 192);
+            width: 70%;
+            height: 650px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script>
+
+        const labels = [
+            'Amsterdam',
+            'Sydney',
+            'Vienna',
+            'Stockholm',
+            'Copenhagen',
+            'Helsinki',
+            'Fukuoka',
+            'Berlin',
+            'Barcelona',
+            'Vancouver',
+            'Melbourne',
+            'Beijing',
+            'Bangkok',
+            'Buenos Aires',
+            'Toronto',
+
+        ];
+
+        const skipped = (ctx, value) => ctx.p0.skip || ctx.p1.skip ? value : undefined;
+        const down = (ctx, value) => ctx.p0.parsed.y > ctx.p1.parsed.y ? value : undefined;
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Pollution Index',
+                data: [30.93, 26.86, 17.33, 19.63, 21.24, 13.08, 40, 39.41, 65.19, 24.26, 25.9, 85.43, 76.64, 52.64, 37.83],
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(136,255,51)',
+
+                segment: {
+                    borderColor: ctx => skipped(ctx, 'rgb(0,0,0,0.2)') || down(ctx, 'rgb(255, 99, 132)'),
+                    borderDash: ctx => skipped(ctx, [6, 6]),
+                },
+                spanGaps: true
+            },
+            {
+                label: 'Life Expectancy',
+                data: [81.2, 82.1, 81, 81.8, 79.8, 80.4, 83.2, 80.6, 82.2, 81.7, 82.1, 75.4, 74.1, 75.9, 81.7],
+                backgroundColor: 'rgb(88, 155, 254)',
+                borderColor: 'rgb(246, 255, 55)',
+
+                segment: {
+                    borderColor: ctx => skipped(ctx, 'rgb(0,0,0,0.2)') || down(ctx, 'rgb(88, 155, 254)'),
+                    borderDash: ctx => skipped(ctx, [6, 6]),
+                },
+                spanGaps: true
+
+            }]
+        };
+
+        let delayed;
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Grafik Perbandingan Pollution Index dan Life Expectancy di 15 Kota dengan Gaya Hidup paling Sehat',
+                    }
+                },
+                animation: {
+                    onComplete: () => {
+                        delayed = true;
+                    },
+                    delay: (context) => {
+                        let delay = 0;
+                        if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                            delay = context.dataIndex * 400 + context.datasetIndex * 500;
+                        }
+                        return delay;
+                    },
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                }
+            }
+        };
+
+        var myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+
+    </script>
+
+
+</body>
+
+</html>
